@@ -1,1 +1,9 @@
-data/*.csv
+# Ignore data files
+data/
+*.csv
+
+# Ignore system files
+.DS_Store
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
