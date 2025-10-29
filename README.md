@@ -5,8 +5,6 @@ This is a collaborative project applying data analytics and machine learning tec
 
 ## Repository Structure
 - Notebooks/ – Contains Jupyter notebooks for data analysis and modeling.
-- data/ – CSV files for analysis (not tracked in Git).
-- .gitignore – Specifies files and folders to exclude from version control.
 
 ## Features
 - Exploratory Data Analysis (EDA) on traffic and parking datasets.
