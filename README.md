@@ -13,5 +13,5 @@ This is a collaborative project applying data analytics and machine learning tec
 
 ## Notes
 - CSV data files are not included in the repository for privacy and size reasons.
-- Make sure to follow the .gitignore rules to avoid uploading large or sensitive files.
+
 

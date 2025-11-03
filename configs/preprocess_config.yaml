@@ -1,0 +1,21 @@
+data:
+  raw_path: data/raw  
+  processed_path: data/processed
+
+split: 
+  test_size: 0.2  
+  random_state: 42  
+
+features:
+  rename: 
+    calculation time: timestamp
+    speed(km/h): speed
+    mean travel time (mins): mean_travel_time
+    current delay (mins): delay
+  encode: 
+    one_hot: trend
+  drop:
+    - speed(mph)
+    - actual delay (mins)
+  target: delay
+  
