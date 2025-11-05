@@ -1,0 +1,24 @@
+
+# --- Data & General Settings ---
+data:
+  path: data/processed/banff_route_preprocessed.pkl
+  model_dir: models
+  n_splits: 3
+  lag_list: [1, 2]
+  roll_windows: [6. 12]
+  target: delay
+  time_col: timestamp
+
+# --- Model Settings ---
+models:
+  RandomForest:
+    n_estimators: 200
+    max_depth: 8
+    random_state: 42
+  XGBoost:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.9
+    random_state: 42
