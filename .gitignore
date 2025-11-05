@@ -1,12 +1,28 @@
-# Ignore data files
-data/
-*.csv
+# Python & venv
+.venv/
+__pycache__/
+*.pyc
+*.pyo
 
-# Ignore system files
+# Jupyter & IDE
+.ipynb_checkpoints/
+.vscode/
 .DS_Store
 
-# Ignore Jupyter checkpoints
-.ipynb_checkpoints/
+# Data & model artifacts
+data/raw/*
+data/processed/*
+models/
+outputs/
+mlruns/
+*.pkl
+*.joblib
+
+# DVC cache
+.dvc/
+.cache/
 
 # Ignore API keys
 .env
+
+

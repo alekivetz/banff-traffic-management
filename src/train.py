@@ -146,8 +146,8 @@ def train_per_route_models(
         X_test_holdout: dict,
         y_test_holdout: dict,
         tscv_splits: dict,
-        save_dir: str='models',
-        config: dict
+        config: dict,
+        save_dir: str='models'
     ):
     """
     Train RandomForest and XGBoost models independently per route using time-series cross validation
@@ -237,4 +237,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
