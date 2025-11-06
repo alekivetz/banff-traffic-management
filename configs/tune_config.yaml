@@ -1,0 +1,38 @@
+# --- Data & General Settings ---
+data:
+  path: data/processed/banff_route_preprocessed.pkl
+  model_dir: models/tuning_results
+  n_splits: 3
+  target: delay
+  time_col: timestamp
+  route_col: route
+  features_to_drop: [route, timestamp, delay]
+  routes: all
+
+# --- MLflow Settings ---
+mlflow: 
+  experiment_name: Banff Tuning Experiments
+  tracking_uri: file:./mlruns
+
+# --- RandomizedSearchCV Settings ---
+search:
+  n_iter: 10
+  scoring: neg_mean_absolute_error
+  n_jobs: -1
+  random_state: 42
+
+# --- RandomForest Parameters ---
+RandomForest:
+  n_estimators: [100, 200, 400]
+  max_depth: [5, 10, 20, null]
+  min_samples_split: [2, 5, 10]
+  min_samples_leaf: [1, 2, 4]
+  max_features: [sqrt, log2]
+
+# --- XGBoost Parameters ---
+XGBoost:
+  n_estimators: [100, 200, 400]
+  max_depth: [3, 6, 10]
+  learning_rate: [0.01, 0.05, 0.1]
+  subsample: [0.6, 0.8, 1.0]
+  colsample_bytree: [0.6, 0.8, 1.0]
