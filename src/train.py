@@ -212,20 +212,25 @@ def train_per_route_models(
             model_path = os.path.join(save_dir, f'{route}_{model_name}.pkl')
             joblib.dump(model, model_path)
 
-        comparison_df = pd.DataFrame(model_results).sort_values(
-            by=['Route', 'Holdout MAE']
-        )
+    comparison_df = pd.DataFrame(model_results).sort_values(
+        by=['Route', 'Holdout MAE']
+    )
 
-        comparison_df.to_csv(os.path.join(save_dir, 'route_model_comparison.csv'), index=False)
-        joblib.dump(comparison_df, os.path.join(save_dir, 'route_model_comparison.pkl'))
+    comparison_df.to_csv(os.path.join(save_dir, 'route_model_comparison.csv'), index=False)
+    joblib.dump(comparison_df, os.path.join(save_dir, 'route_model_comparison.pkl'))
 
-        logger.info(f'Trained and logged {len(comparison_df)} models to MLflow')
-        return comparison_df
+    logger.info(f'Trained and logged {len(comparison_df)} models to MLflow')
+    return comparison_df
     
 # --- Main execution ---
 
 def main():
     config = load_config()
+
+    # Initialize MLflow experiment
+    mlflow.set_tracking_uri(config["mlflow"]["tracking_uri"])
+    mlflow.set_experiment(config["mlflow"]["experiment_name"])
+
 
     df = load_preprocessed_data(config['data']['path'])
     X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config['data'])

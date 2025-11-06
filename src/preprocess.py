@@ -94,7 +94,11 @@ def clean_data(
     df = df.drop_duplicates()  
     logger.info(f'Dropped {duplicate_count} duplicate rows')
 
-    # Missing values
+    # Missing and invalid values
+
+    for col in ['speed', 'delay', 'mean_travel_time']:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+        
     missing_subset = df[df[['speed', 'delay']].isna().any(axis=1)]
     df = df.drop(missing_subset.index)
     logger.info(f'Dropped {missing_subset.shape[0]} rows with missing values')  

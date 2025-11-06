@@ -9,6 +9,11 @@ data:
   target: delay
   time_col: timestamp
 
+# --- MLflow Settings ---
+mlflow:
+  experiment_name: Banff Per-Route Models
+  tracking_uri: file:./mlruns
+
 # --- Model Settings ---
 models:
   RandomForest:
