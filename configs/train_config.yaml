@@ -5,7 +5,7 @@ data:
   model_dir: models
   n_splits: 3
   lag_list: [1, 2]
-  roll_windows: [6. 12]
+  roll_windows: [6, 12]
   target: delay
   time_col: timestamp
 

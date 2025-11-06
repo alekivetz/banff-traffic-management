@@ -70,8 +70,8 @@ def prepare_route_datasets(
     TARGET = config['target']
     TIME_COL = config['time_col']
     num_splits = config['n_splits']
-    lag_list = config['lags']
-    roll_windows = config['rolling_windows']
+    lag_list = config['lag_list']
+    roll_windows = config['roll_windows']
 
     # Containers
     X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = {}, {}, {}, {}, {}
@@ -91,7 +91,7 @@ def prepare_route_datasets(
         route_data = df[df['route'] == route].sort_values(TIME_COL).copy()
         n = len(route_data)
 
-        # Skip small routes
+        # Skip small routese
         if n < max(roll_windows) + 10:
             continue
 
@@ -228,7 +228,7 @@ def main():
     config = load_config()
 
     df = load_preprocessed_data(config['data']['path'])
-    X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config)
+    X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config['data'])
 
     comparison_df = train_per_route_models(
         X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits, config, save_dir=config['data']['model_dir'])
