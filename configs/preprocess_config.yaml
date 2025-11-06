@@ -7,11 +7,11 @@ features:
     calculation time: timestamp
     speed(km/h): speed
     mean travel time (mins): mean_travel_time
-    current delay (mins): delay
+    actual delay (mins): delay
   encode: 
     one_hot: trend
   drop:
     - speed(mph)
-    - actual delay (mins)
+    - current delay (mins)
   target: delay
   
