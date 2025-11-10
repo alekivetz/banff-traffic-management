@@ -9,7 +9,7 @@ mlflow:
 data:
   model_dir: 'models'                     # directory containing trained .pkl models
   eval_path: 'data/processed/route_holdout.parquet'   # dataset for evaluation (holdout or test)
-  target_col: 'current_delay'             # target column in evaluation dataset
+  target_col: 'delay'                     # target column in evaluation dataset
 
 options:
   mlflow_logging: true                    # set to false to disable MLflow logging
