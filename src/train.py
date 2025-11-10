@@ -286,7 +286,7 @@ def main():
 
 
     df = load_preprocessed_data(config['data']['path'])
-    tuned_params = load_tuned_params(os.path.join(config['data']['model_dir'], 'tuning_summary.csv'))
+    tuned_params = load_tuned_params(os.path.join(config['data']['tuning_results'], 'tuning_summary.csv'))
 
     X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config['data'])
     
