@@ -1,0 +1,18 @@
+project:
+  name: 'Banff Traffic Management'
+  random_state: 42
+
+mlflow:
+  tracking_uri: 'file:./mlruns'
+  experiment_name: 'Banff_Evaluation'
+
+data:
+  model_dir: 'models'                     # directory containing trained .pkl models
+  eval_path: 'data/processed/route_holdout.parquet'   # dataset for evaluation (holdout or test)
+  target_col: 'current_delay'             # target column in evaluation dataset
+
+options:
+  mlflow_logging: true                    # set to false to disable MLflow logging
+  save_predictions: true                  # if true, saves per-model prediction parquet files
+  save_summary: true                      # saves overall evaluation_summary.csv
+  output_dir: 'models/evaluation'         # where evaluation outputs are saved

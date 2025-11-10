@@ -2,6 +2,8 @@
 Training pipeline for the Banff Traffic Management project.
 Trains per-route regression models (Random Forest and XGBoost)
 using TimeSeriesSplit cross-validation and chronological holdouts.
+
+Now automatically loads best hyperparameters from tuning_sumamary.csv if it exists.
 """
 
 # Standard library imports
@@ -41,7 +43,7 @@ def load_config(
         return yaml.safe_load(f)
     
 # --- Load preprocessed data ---
-
+    
 def load_preprocessed_data(
         filepath: str
     ) -> pd.DataFrame:
@@ -55,6 +57,26 @@ def load_preprocessed_data(
 
     logger.info(f'Loaded preprocessed data - shape: {df.shape}')
     return df
+
+# --- Load best hyperparameters from tuning summary ---
+def load_tuned_params(summary_path: str) -> dict:
+    if not os.path.exists(summary_path):
+        logger.warning(f'No tuning summary found at {summary_path}, using defaults from config.')
+        return {}
+
+    df = pd.read_csv(summary_path)
+    tuned = {}
+
+    for _, row in df.iterrows():
+        route = row['route']
+        model = row['model']
+        # Filter out non-param columns
+        params = {k: row[k] for k in df.columns if k not in ['route', 'model', 'mae']}
+        tuned.setdefault(route, {})[model] = params
+
+    logger.info(f'Loaded tuned hyperparameters for {len(tuned)} routes from {summary_path}')
+    return tuned
+
 
 # --- Prepare per-route CV/Holdout splits and split-dependent features ---
 
@@ -147,6 +169,7 @@ def train_per_route_models(
         y_test_holdout: dict,
         tscv_splits: dict,
         config: dict,
+        tuned_params: dict = None,
         save_dir: str='models'
     ):
     """
@@ -161,6 +184,11 @@ def train_per_route_models(
         X_cv, y_cv = X_train_cv[route], y_train_cv[route]
         X_test, y_test = X_test_holdout[route], y_test_holdout[route]
         folds = tscv_splits[route]
+
+        # Load tuned params if available
+        rf_params = tuned_params.get(route, {}).get('RandomForest', config['models']['RandomForest'])
+        xgb_params = tuned_params.get(route, {}).get('XGBoost', config['models']['XGBoost'])
+
 
         models = {
             'RandomForest': RandomForestRegressor(**config['models']['RandomForest'], n_jobs=-1),
@@ -221,7 +249,32 @@ def train_per_route_models(
 
     logger.info(f'Trained and logged {len(comparison_df)} models to MLflow')
     return comparison_df
-    
+
+# --- Save combined holdout set ---
+
+def save_combined_holdout(X_test_holdout: dict, y_test_holdout: dict, output_path: str):
+    """
+    Combine all per-route holdout sets into one DataFrame and save as Parquet.
+    This file will be used later by evaluate.py.
+    """
+    logger.info('Combining route holdout datasets for evaluation...')
+    holdout_frames = []
+
+    for route, X_hold in X_test_holdout.items():
+        y_hold = y_test_holdout[route]
+        temp = X_hold.copy()
+        temp['actual_delay'] = y_hold.values
+        temp['route'] = route
+        holdout_frames.append(temp)
+
+    combined_df = pd.concat(holdout_frames, ignore_index=True)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    combined_df.to_parquet(output_path, index=False)
+    logger.info(f'Saved combined holdout dataset to {output_path} (shape={combined_df.shape})')
+
+    return combined_df
+
+
 # --- Main execution ---
 
 def main():
@@ -233,11 +286,18 @@ def main():
 
 
     df = load_preprocessed_data(config['data']['path'])
-    X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config['data'])
+    tuned_params = load_tuned_params(os.path.join(config['data']['model_dir'], 'tuning_summary.csv'))
 
-    comparison_df = train_per_route_models(
-        X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits, config, save_dir=config['data']['model_dir'])
+    X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits = prepare_route_datasets(df, config['data'])
     
+    comparison_df = train_per_route_models(
+        X_train_cv, y_train_cv, X_test_holdout, y_test_holdout, tscv_splits, 
+        config, tuned_params, save_dir=config['data']['model_dir'])
+    
+    # Save combined holdout for evaluation
+    holdout_path = os.path.join(config['data']['processed_path'], 'route_holdout.parquet')
+    save_combined_holdout(X_test_holdout, y_test_holdout, holdout_path)
+
     logger.info('Training complete. Results saved under models/ and logged to MLflow.')
 
 if __name__ == '__main__':

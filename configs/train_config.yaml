@@ -2,6 +2,7 @@
 # --- Data & General Settings ---
 data:
   path: data/processed/banff_route_preprocessed.pkl
+  processed_path: data/processed
   model_dir: models
   n_splits: 3
   lag_list: [1, 2]
