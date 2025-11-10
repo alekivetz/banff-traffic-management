@@ -4,6 +4,7 @@ data:
   path: data/processed/banff_route_preprocessed.pkl
   processed_path: data/processed
   model_dir: models
+  tuning_results: models/tuning_results
   n_splits: 3
   lag_list: [1, 2]
   roll_windows: [6, 12]
