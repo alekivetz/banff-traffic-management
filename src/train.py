@@ -263,7 +263,7 @@ def save_combined_holdout(X_test_holdout: dict, y_test_holdout: dict, output_pat
     for route, X_hold in X_test_holdout.items():
         y_hold = y_test_holdout[route]
         temp = X_hold.copy()
-        temp['actual_delay'] = y_hold.values
+        temp['delay'] = y_hold.values
         temp['route'] = route
         holdout_frames.append(temp)
 
