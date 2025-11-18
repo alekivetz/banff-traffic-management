@@ -18,9 +18,12 @@ mlruns/
 *.pkl
 *.joblib
 
-# DVC cache
-.dvc/
-.cache/
+# DVC cache and temp folders
+.dvc/cache/
+.dvc/tmp/
+
+# DVC local-only config (credentials)
+.dvc/config.local
 
 # Ignore API keys
 .env
