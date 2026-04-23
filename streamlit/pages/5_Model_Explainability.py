@@ -35,11 +35,11 @@ The model performs well for **low congestion** (97 % precision) and captures **h
 
 col1, col2 = st.columns([2, 1])
 with col1:
-    st.image("assets/shap_classifier_summary.png", caption="SHAP Summary — Global Delay Classifier", width=650)
+    st.image(BASE_DIR / "assets/shap_classifier_summary.png", caption="SHAP Summary — Global Delay Classifier", width=650)
 with col2:
     st.markdown("**Top 10 Feature Importances**")
     try:
-        clf_importance = pd.read_csv("assets/shap_classifier_top10.csv")
+        clf_importance = pd.read_csv(BASE_DIR / "assets/shap_classifier_top10.csv")
         st.dataframe(clf_importance.head(10), hide_index=True, width='stretch')
     except FileNotFoundError:
         st.warning("Feature importance file not found.")
