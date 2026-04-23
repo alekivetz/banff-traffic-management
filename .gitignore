@@ -1,0 +1,54 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# --- Environments ---
+.venv/
+env/
+venv/
+ENV/
+*.egg-info/
+*.egg
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# --- Logs and cache ---
+*.log
+*.tmp
+.cache/
+
+# --- Models and artifacts ---
+*.pickle
+*.joblib
+*.pkl
+
+# --- Data files (local only) ---
+data/
+!data/.keep
+*.parquet
+*.xlsx
+*.csv
+*.zip
+
+# --- Streamlit ---
+streamlit/.streamlit/secrets.toml 
+streamlit/.streamlit/cache/
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
