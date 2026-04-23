@@ -41,6 +41,7 @@ data/
 # --- Streamlit ---
 streamlit/.streamlit/secrets.toml 
 streamlit/.streamlit/cache/
+!streamlit/assets/*.csv
 
 # --- IDEs ---
 .vscode/
