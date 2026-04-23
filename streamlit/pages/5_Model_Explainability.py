@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from pathlib import Path
+BASE_DIR = Path(__file__).parent.parent
 
 from utils.display_images import display_banner
 
@@ -57,11 +59,11 @@ Per-route **Random Forest regressors** forecast continuous travel delays using t
 
 col1, col2 = st.columns([2, 1])
 with col1:
-    st.image("assets/shap_per_route_summary.png", caption="SHAP Summary — Per-Route Delay Regressors", width=650)
+    st.image(BASE_DIR / "assets/shap_per_route_summary.png", caption="SHAP Summary — Per-Route Delay Regressors", width=650)
 with col2:
     st.markdown("**Top 10 Aggregated Feature Importances**")
     try:
-        per_route_importance = pd.read_csv("assets/shap_per_route_top10.csv")
+        per_route_importance = pd.read_csv(BASE_DIR / "assets/shap_per_route_top10.csv")
         st.dataframe(per_route_importance.head(10), hide_index=True, width='stretch')
     except FileNotFoundError:
         st.warning("Feature importance file not found.")
@@ -81,11 +83,11 @@ An **XGBoost regressor** predicts parking occupancy and duration based on hourly
 
 col1, col2 = st.columns([2, 1])
 with col1:
-    st.image("assets/shap_parking_summary.png", caption="SHAP Summary — Parking Availability Regressor", width=650)
+    st.image(BASE_DIR / "assets/shap_parking_summary.png", caption="SHAP Summary — Parking Availability Regressor", width=650)
 with col2:
     st.markdown("**Top 10 Feature Importances**")
     try:
-        parking_importance = pd.read_csv("assets/shap_parking_top10.csv")
+        parking_importance = pd.read_csv(BASE_DIR / "assets/shap_parking_top10.csv")
         st.dataframe(parking_importance.head(10), hide_index=True, width='stretch')
     except FileNotFoundError:
         st.warning("Feature importance file not found.")
