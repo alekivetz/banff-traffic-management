@@ -63,7 +63,7 @@ with col1:
 with col2:
     st.markdown("**Top 10 Aggregated Feature Importances**")
     try:
-        per_route_importance = pd.read_csv(BASE_DIR / "assets/shap_per_route_top10.csv")
+        per_route_importance = pd.read_csv(BASE_DIR + "assets/shap_per_route_top10.csv")
         st.dataframe(per_route_importance.head(10), hide_index=True, width='stretch')
     except FileNotFoundError:
         st.warning("Feature importance file not found.")
